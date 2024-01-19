@@ -3,6 +3,7 @@ import profileReducer from '../Features/Profile/profileSlice'
 import userReducer from '../Features/user/userSlice'
 import taskReducer from '../Features/tasks/taskSlice'
 import commentReducer from '../Features/Comment/commentSlice'
+import documentReducer from '../Features/Document/documentSlice'
 import { combineReducers } from '@reduxjs/toolkit'
 
 export const rootReducer = combineReducers({
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
     user: userReducer,
     task: taskReducer,
     comment: commentReducer,
+    document: documentReducer,
 })

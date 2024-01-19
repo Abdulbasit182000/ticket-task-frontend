@@ -1,24 +1,20 @@
+import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider } from "antd";
-import { getTasks, getprojects, getprofile, getAllUsers } from "../../api/main";
-import TaskList from "../taskList/taskList";
+import { getDocuments, getTasks, getprojects, getprofile, getAllUsers } from "../../api/main";
+import DoumentList from "../documentList/documentList";
 import Navbar from "../Navbar/navbar";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Task = () => {
+const Document = () => {
 
-    console.log('selector before')
     const projects = useSelector(state => state.project.projects)
-    console.log('projets are', projects)
-    console.log('selector after')
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('')
     const dispatch = useDispatch();
     const [num, setNum] = useState(1)
     const { id } = useParams();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true)
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,17 +24,14 @@ const Task = () => {
             }
             else {
                 dispatch(getprojects()).then(
-                    () => {
-                        console.log('completed')
-                        dispatch(getprofile())
-                    }
+                    () => dispatch(getprofile())
                 ).then(
                     () => dispatch(getAllUsers())
                 ).then(
-                    () => dispatch(getTasks(id))
+                    dispatch(getDocuments(id))
                 ).then(
                     () => {
-                        const selectedProject = projects?.find(element => element.id === parseInt(id));
+                        const selectedProject = projects.find(element => element.id === parseInt(id));
                         if (selectedProject) {
                             setTitle(selectedProject.title);
                         }
@@ -56,16 +49,16 @@ const Task = () => {
     }
 
     return (
-        <div className="task">
-            {isLoading && <div>Loading...</div>}
+        <div className="document">
+            {isLoading && <div> Loading... </div>}
             {!isLoading && title !== '' && <div>
-                <Navbar />
-                <p> <h1>{title}</h1> </p>
-                <Divider />
-                <TaskList idp={id} onHandleUsage={handleUsageComplete} />
+                <Navbar/>
+                <p><h1>{title}</h1></p>
+                <Divider/>
+                <DoumentList idp={id} onHandleUsage={handleUsageComplete}/>
             </div>}
         </div>
     );
 }
 
-export default Task;
+export default Document;

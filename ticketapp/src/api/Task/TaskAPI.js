@@ -1,6 +1,10 @@
 import privateAxios from '../Private'
 
-// create Task
+
+export const getAllTasks = () => {
+    return privateAxios.get('tasks/')
+}
+
 export const createTask = (data) => {
     return privateAxios.post('tasks/', data)
 }

@@ -62,7 +62,7 @@ const ProjectList = ({ profile, onHandleUsage }) => {
                                 <div>
                                     <Card
                                         style={{
-                                            width: 300,
+                                            width: 400,
                                         }}
                                         actions={[
                                             <Button onClick={() => handleUpdate(project.id)} >Edit</Button>,
@@ -77,7 +77,10 @@ const ProjectList = ({ profile, onHandleUsage }) => {
                                                 <Button danger>Delete</Button>
                                             </Popconfirm>,
                                             <Link to={`/task/${project.id}`}>
-                                                <Button>Details</Button>
+                                                <Button>Task Details</Button>
+                                            </Link>,
+                                            <Link to={`/document/${project.id}`}>
+                                                <Button>Documents</Button>
                                             </Link>,
                                         ]}
                                     >

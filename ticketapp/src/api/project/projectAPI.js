@@ -25,3 +25,7 @@ export const deleteProject = (id) => {
 export const getTaskByProject = (id) => {
     return privateAxios.get(`projects/${id}/task/`)
 }
+
+export const getDocumentByProject = (id) => {
+    return privateAxios.get(`projects/${id}/document/`)
+}

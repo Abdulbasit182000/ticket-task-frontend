@@ -34,7 +34,7 @@ const UpdateTask = ({id, onUpdateComplete}) => {
             setDecription(selectedTask.description);
             setStatus(selectedTask.status);
         }
-    })
+    },[id, tasks])
 
     const HandleClick = async () => {
         const data = {

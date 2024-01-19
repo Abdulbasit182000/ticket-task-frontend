@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import {store} from './Store/store'
 import Task from './components/Tasks/tasks';
 import Comment from './components/Comment/comment';
+import Document from './components/Document/document';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/project" element={<Project/>} />
             <Route path="/task/:id" element={<Task/>} />
             <Route path="/comment/:id" element={<Comment/>}/>
+            <Route path="/document/:id" element={<Document/>} />
           </Routes>
         </Router>
       </div>
