@@ -37,13 +37,6 @@ const Task = () => {
                 ).then(
                     () => dispatch(getTasks(id))
                 ).then(
-                    () => {
-                        const selectedProject = projects?.find(element => element.id === parseInt(id));
-                        if (selectedProject) {
-                            setTitle(selectedProject.title);
-                        }
-                    }
-                ).then(
                     () => setIsLoading(false)
                 )
             }
@@ -58,9 +51,8 @@ const Task = () => {
     return (
         <div className="task">
             {isLoading && <div>Loading...</div>}
-            {!isLoading && title !== '' && <div>
+            {!isLoading && <div>
                 <Navbar />
-                <p> <h1>{title}</h1> </p>
                 <Divider />
                 <TaskList idp={id} onHandleUsage={handleUsageComplete} />
             </div>}

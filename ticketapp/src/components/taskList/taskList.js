@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteTasks, getTasks } from '../../api/main'
 import UpdateTask from '../updateTask/updateTask';
 import CreateTask from '../createTask/createTask';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 const { Column } = Table;
 
@@ -12,8 +12,17 @@ const TaskList = ({ idp, onHandleUsage }) => {
     const tasks = useSelector(state => state.task.tasks)
     const [usage, setUsage] = useState('none')
     const [taskId, setTaskID] = useState('')
+    const [title, setTitle] = useState('')
     const dispatch = useDispatch();
+    const projects = useSelector(state => state.project.projects )
 
+
+    useEffect(() => {
+        const selectedProject = projects.find(element => element.id === parseInt(idp))
+        if (selectedProject) {
+            setTitle(selectedProject.title)
+        }
+    },[projects])
 
     const handleDelete = (id) => {
         dispatch(deleteTasks(id)).then(
@@ -48,6 +57,7 @@ const TaskList = ({ idp, onHandleUsage }) => {
 
     return (
         <div className="task-list">
+            {tasks && title !== '' && <p><h1>{title}</h1></p>}
             {tasks && usage === 'none' && <div> <Table dataSource={tasks}>
                 <Column title="Title" dataIndex="title" key="title"></Column>
                 <Column title="Description" dataIndex="description" key="description"></Column>
@@ -69,7 +79,7 @@ const TaskList = ({ idp, onHandleUsage }) => {
                                 <Button danger>Delete</Button>
                             </Popconfirm>
                             <Link to={`/comment/${record.id}`}>
-                                <Button>Details</Button>
+                                <Button>Comments</Button>
                             </Link>
                         </span>
                     )}

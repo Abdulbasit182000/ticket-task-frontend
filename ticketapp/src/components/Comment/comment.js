@@ -31,17 +31,9 @@ const Comment = () => {
                 ).then(
                     () => dispatch(ListTasks())
                 ).then(
-                    () => setIsLoading(false)
-                ).then(
                     () => dispatch(getcomments(id))
                 ).then(
-                    () => {
-                        const selectedTask = Tasks.find(element => element.id === parseInt(id));
-                        if (selectedTask) {
-                            setTitle(selectedTask.title)
-                            setProjectID(selectedTask.project)
-                        }
-                    }
+                    () => setIsLoading(false)
                 )
             }
         }
@@ -55,11 +47,10 @@ const Comment = () => {
     return (
         <div className="comment">
             {isLoading && <div>Loading...</div>}
-            {!isLoading && title !== '' && <div>
+            {!isLoading && <div>
                 <Navbar/>
-                <p> <h1>{title}</h1> </p>
                 <Divider />
-                <CommentList idt={id} onHandleUsage={handleUsageComplete} idp={projectID} />
+                <CommentList idt={id} onHandleUsage={handleUsageComplete}/>
             </div>}
         </div>
     );

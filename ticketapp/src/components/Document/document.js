@@ -1,14 +1,13 @@
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getDocuments, getTasks, getprojects, getprofile, getAllUsers } from "../../api/main";
+import { useDispatch} from "react-redux";
+import { getDocuments,getprojects, getprofile, getAllUsers } from "../../api/main";
 import DoumentList from "../documentList/documentList";
 import Navbar from "../Navbar/navbar";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Document = () => {
 
-    const projects = useSelector(state => state.project.projects)
     const [title, setTitle] = useState('')
     const dispatch = useDispatch();
     const [num, setNum] = useState(1)
@@ -30,13 +29,6 @@ const Document = () => {
                 ).then(
                     dispatch(getDocuments(id))
                 ).then(
-                    () => {
-                        const selectedProject = projects.find(element => element.id === parseInt(id));
-                        if (selectedProject) {
-                            setTitle(selectedProject.title);
-                        }
-                    }
-                ).then(
                     () => setIsLoading(false)
                 )
             }
@@ -51,9 +43,8 @@ const Document = () => {
     return (
         <div className="document">
             {isLoading && <div> Loading... </div>}
-            {!isLoading && title !== '' && <div>
+            {!isLoading && <div>
                 <Navbar/>
-                <p><h1>{title}</h1></p>
                 <Divider/>
                 <DoumentList idp={id} onHandleUsage={handleUsageComplete}/>
             </div>}

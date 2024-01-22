@@ -7,7 +7,7 @@ import CreateComment from "../createComment/createComments";
 import UpdateComment from "../updateComment/updateComment";
 
 
-const CommentList = ({ idt, onHandleUsage, idp }) => {
+const CommentList = ({ idt, onHandleUsage}) => {
 
     const comments = useSelector(state => state.comment.comments);
     const [usage, setUsage] = useState('none');
@@ -16,9 +16,16 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
     const profile = useSelector(state => state.profile.profile.id);
     const [commentID, setCommentID] = useState('');
     const [text, setText] = useState('')
+    const [title, setTitle] = useState('')
+    const tasks = useSelector(state => state.task.tasks)
+    const [projectID, setProjectID] = useState('')
 
     useEffect(() => {
-
+        const selectedTask = tasks.find(element => element.id === parseInt(idt));
+        if (selectedTask) {
+            setTitle(selectedTask.title)
+            setProjectID(selectedTask.project)
+        }
     }, [usage])
 
     const getAuthor = (id) => {
@@ -35,7 +42,7 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
             "text": com,
             "author": profile,
             "task": idt,
-            "project": idp
+            "project": projectID
         }
         dispatch(createComments(data)).then(
             () => {
@@ -51,7 +58,7 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
             "text": com,
             "author": profile,
             "task": idt,
-            "project": idp
+            "project": projectID
         }
         dispatch(updateComments(commentID, data)).then(
             () => {
@@ -85,6 +92,7 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
 
     return (
         <div className="comment-list">
+            {comments && title !== '' && <p><h1>{title}</h1></p>}
             {comments && <div>
                 <Row justify="center" align="middle" style={{ height: '100vh' }}>
                     <Col>

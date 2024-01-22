@@ -1,6 +1,6 @@
 import { Col, Flex, Row } from "antd";
 import { Table, Popconfirm, Button, message} from 'antd';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getDocuments, deleteDocuments } from "../../api/main";
 import { useDispatch, useSelector } from "react-redux";
 import CreateDocument from "../createDocument/createDocument";
@@ -14,7 +14,16 @@ const DoumentList = ({ idp, onHandleUsage }) => {
     const documents = useSelector(state => state.document.documents);
     const [usage, setUsage] = useState('none');
     const [documentID, setDocumentID] = useState('');
+    const [title, setTitle] = useState('')
     const dispatch = useDispatch();
+    const projects = useSelector(state => state.project.projects )
+
+    useEffect(() => {
+        const selectedProject = projects.find(element => element.id === parseInt(idp))
+        if (selectedProject) {
+            setTitle(selectedProject.title)
+        }
+    },[projects])
 
     const handleDelete = (id) => {
         dispatch(deleteDocuments(id)).then(
@@ -52,6 +61,7 @@ const DoumentList = ({ idp, onHandleUsage }) => {
 
     return (
         <div className="document-list">
+            {documents && title !== '' && <p><h1>{title}</h1></p> }
             {documents && usage === 'none' && <div> <Table dataSource={documents}>
                 <Column title="Name" dataIndex="name" key="name"></Column>
                 <Column title="Description" dataIndex="description" key="description"></Column>
