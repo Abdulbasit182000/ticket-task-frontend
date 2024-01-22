@@ -66,7 +66,7 @@ const DoumentList = ({ idp, onHandleUsage }) => {
                             <Button onClick={() => handleUpdate(record.id)}>Edit</Button>
                             <Popconfirm
                                 key="delete"
-                                title="Delete the Project"
+                                title="Delete the Document"
                                 onConfirm={() => handleDelete(record.id)}
                                 onCancel={cancel}
                                 okText="Yes"

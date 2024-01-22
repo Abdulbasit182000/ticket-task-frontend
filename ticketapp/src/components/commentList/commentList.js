@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Comment } from '@ant-design/compatible'
-import { Col, Flex, Row, Button, Avatar, Tooltip } from "antd";
-import { createComments } from "../../api/main";
+import { Col, Flex, Row, Button, Avatar, Popconfirm, message } from "antd";
+import { createComments, updateComments, deleteComments } from "../../api/main";
 import CreateComment from "../createComment/createComments";
+import UpdateComment from "../updateComment/updateComment";
 
 
 const CommentList = ({ idt, onHandleUsage, idp }) => {
@@ -14,6 +15,11 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
     const all_users = useSelector(state => state.user.users);
     const profile = useSelector(state => state.profile.profile.id);
     const [commentID, setCommentID] = useState('');
+    const [text, setText] = useState('')
+
+    useEffect(() => {
+
+    }, [usage])
 
     const getAuthor = (id) => {
         const selectedUser = all_users.find(element => element.id === parseInt(id));
@@ -23,10 +29,10 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
         }
     }
 
-    const handleModalOk = (text) => {
+    const handleModalOk = (com) => {
 
         const data = {
-            "text": text,
+            "text": com,
             "author": profile,
             "task": idt,
             "project": idp
@@ -40,13 +46,46 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
 
     };
 
-    const handleEdit = (cid) => {
-        console.log('comment id is',cid);
+    const handleUpdateOk = (com) => {
+        const data = {
+            "text": com,
+            "author": profile,
+            "task": idt,
+            "project": idp
+        }
+        dispatch(updateComments(commentID, data)).then(
+            () => {
+                setUsage('none')
+                onHandleUsage();
+            }
+        )
     }
+
+    const handleEdit = (cid) => {
+        console.log('comment id is', cid);
+        const selectedComment = comments.find(element => element.id === parseInt(cid))
+        if (selectedComment) {
+            console.log('select comment is:', selectedComment)
+            setText(selectedComment.text)
+        }
+        setCommentID(cid)
+        setUsage('update');
+    }
+
+    const confirm = async (id) => {
+        dispatch(deleteComments(id)).then(
+            () => onHandleUsage()
+        )
+
+    };
+    const cancel = (e) => {
+        console.log(e);
+        message.error('Delete request withdrawn');
+    };
 
     return (
         <div className="comment-list">
-            {comments && usage === 'none' && <div>
+            {comments && <div>
                 <Row justify="center" align="middle" style={{ height: '100vh' }}>
                     <Col>
                         <h1 style={{ textAlign: 'center' }}>All Comments</h1>
@@ -59,23 +98,26 @@ const CommentList = ({ idt, onHandleUsage, idp }) => {
                                         avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
                                     >
                                     </Comment>
-                                    <Button Onclick={handleEdit(comment.id)}>Edit</Button>
+                                    <Button onClick={() => handleEdit(comment.id)}>Edit</Button>
+
+                                    <Popconfirm
+                                        key="delete"
+                                        title="Delete the Document"
+                                        onConfirm={() => confirm(comment.id)}
+                                        onCancel={cancel}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button danger>Delete</Button>
+                                    </Popconfirm>
                                 </div>
                             ))}
                         </Flex>
                     </Col>
                 </Row>
-                {/* <Flex
-                    vertical
-                    gap="small"
-                    style={{ width: '100%', }}>
-                    <Button onClick={() => handleCreate()} type="primary" block>
-                        Post Comment
-                    </Button>
-
-                </Flex> */}
             </div>}
-            {comments && <CreateComment onComplete={handleModalOk} />}
+            {comments && usage === 'none' && <CreateComment onComplete={handleModalOk} />}
+            {comments && usage === 'update' && <UpdateComment com={text} onComplete={handleUpdateOk} />}
         </div>
     );
 }

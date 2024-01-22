@@ -112,7 +112,7 @@ const UpdateDocument = ({ id, onUpdateComplete }) => {
                                 name="file"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                     },
                                 ]}
                                 label="Upload"

@@ -60,7 +60,7 @@ const TaskList = ({ idp, onHandleUsage }) => {
                             <Button onClick={() => handleUpdate(record.id)}>Edit</Button>
                             <Popconfirm
                                 key="delete"
-                                title="Delete the Project"
+                                title="Delete the Task"
                                 onConfirm={() => handleDelete(record.id)}
                                 onCancel={cancel}
                                 okText="Yes"

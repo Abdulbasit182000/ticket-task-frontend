@@ -1,5 +1,5 @@
 import { Comment } from '@ant-design/compatible';
-import { Avatar, Button, Form, Input} from 'antd';
+import { Avatar, Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
 const { TextArea } = Input;
 
@@ -16,10 +16,10 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </>
 );
 
-const CreateComment = ({ onComplete }) => {
+const UpdateComment = ({ com, onComplete }) => {
 
     const [submitting, setSubmitting] = useState(false);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(com);
 
     const handleSubmit = () => {
         if (!value) return;
@@ -36,7 +36,7 @@ const CreateComment = ({ onComplete }) => {
     };
 
     return (
-        <div className="create-comment">
+        <div className="update-comment">
             <>
                 <Comment
                     avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
@@ -54,8 +54,4 @@ const CreateComment = ({ onComplete }) => {
     );
 }
 
-export default CreateComment;
-
-// const HandleClick = () => {
-//     onComplete(comment);
-// }
+export default UpdateComment;

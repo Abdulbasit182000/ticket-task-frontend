@@ -1,6 +1,6 @@
 import { listprojects, deleteProject, createProject, updateProject, getTaskByProject, getDocumentByProject } from './project/projectAPI'
 import { getAllTasks, createTask, deleteTask, updateTask, getCommentByTask } from './Task/TaskAPI'
-import { createComment, updateComment } from './comment/commentAPI'
+import { createComment, updateComment, deleteComment } from './comment/commentAPI'
 import { createDocument, updateDocument, deleteDocument } from './document/documentAPI'
 import { profile, allProfiles } from './accounts/accountAPI'
 import { addProject } from '../Features/project/projectSlice'
@@ -154,6 +154,15 @@ export const createComments = (data) => async (dispatch) => {
 export const updateComments = (id, data) => async (dispatch) => {
     try {
         const response = await updateComment(id, data)
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteComments = (id) => async (dispatch) => {
+    try {
+        const response = await deleteComment(id)
     }
     catch (error) {
         console.log(error)
