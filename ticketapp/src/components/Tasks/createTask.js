@@ -1,7 +1,6 @@
 import { Col, Flex, Row, Button, Form, Input, Select, Space } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { createTasks } from '../../api/main'
 
 const { Option } = Select;
@@ -24,7 +23,6 @@ const tailLayout = {
 const CreateTask = ({id, onCreateComplete}) => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [title, SetTitle] = useState('')
     const [description, setDescription] = useState('')
     const [status, setStatus] = useState('OP')

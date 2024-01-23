@@ -1,20 +1,20 @@
 import { Table, Popconfirm, Button, message, Flex } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTasks, getTasks } from '../../api/main'
-import UpdateTask from '../updateTask/updateTask';
-import CreateTask from '../createTask/createTask';
+import UpdateTask from './updateTask';
+import CreateTask from './createTask';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 const { Column } = Table;
 
-const TaskList = ({ idp, onHandleUsage }) => {
+const TaskList = ({ role, idp, onHandleUsage }) => {
 
     const tasks = useSelector(state => state.task.tasks)
     const [usage, setUsage] = useState('none')
     const [taskId, setTaskID] = useState('')
     const [title, setTitle] = useState('')
     const dispatch = useDispatch();
-    const projects = useSelector(state => state.project.projects )
+    const projects = useSelector(state => state.project.projects)
 
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const TaskList = ({ idp, onHandleUsage }) => {
         if (selectedProject) {
             setTitle(selectedProject.title)
         }
-    },[projects])
+    }, [idp, projects])
 
     const handleDelete = (id) => {
         dispatch(deleteTasks(id)).then(
@@ -31,7 +31,6 @@ const TaskList = ({ idp, onHandleUsage }) => {
     };
 
     const cancel = (e) => {
-        console.log(e);
         message.error('Delete request withdrawn');
     };
 
@@ -67,8 +66,8 @@ const TaskList = ({ idp, onHandleUsage }) => {
                     key="actions"
                     render={(text, record) => (
                         <span>
-                            <Button onClick={() => handleUpdate(record.id)}>Edit</Button>
-                            <Popconfirm
+                            {role === 'MA' && <Button onClick={() => handleUpdate(record.id)}>Edit</Button> }
+                            {role === 'MA' && <Popconfirm
                                 key="delete"
                                 title="Delete the Task"
                                 onConfirm={() => handleDelete(record.id)}
@@ -77,7 +76,7 @@ const TaskList = ({ idp, onHandleUsage }) => {
                                 cancelText="No"
                             >
                                 <Button danger>Delete</Button>
-                            </Popconfirm>
+                            </Popconfirm>}
                             <Link to={`/comment/${record.id}`}>
                                 <Button>Comments</Button>
                             </Link>
@@ -85,14 +84,14 @@ const TaskList = ({ idp, onHandleUsage }) => {
                     )}
                 />
             </Table>
-                <Flex
+                {role === 'MA' && <Flex
                     vertical
                     gap="small"
                     style={{ width: '100%', }}>
                     <Button onClick={() => handleCreate()} type="primary" block>
                         Create Task
                     </Button>
-                </Flex>
+                </Flex>}
             </div>}
             {tasks && usage === 'update' && <UpdateTask id={taskId} onUpdateComplete={handleUpdateComplete} />}
             {tasks && usage === 'create' && <CreateTask id={idp} onCreateComplete={handleCreateComplete} />}

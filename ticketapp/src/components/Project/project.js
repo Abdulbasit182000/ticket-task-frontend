@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Space } from 'antd';
-import ProjectList from "../projectList/projectList";
+import ProjectList from "./projectList";
 import { getprojects, getprofile, getAllUsers } from "../../api/main";
 import Navbar from "../Navbar/navbar";
 
@@ -31,7 +31,7 @@ const Project = () => {
             }
         }
         fetchData();
-    }, [num, dispatch])
+    }, [num, dispatch, navigate])
 
     const handleUsageComplete = () => {
         setNum(num + 1);
@@ -47,7 +47,7 @@ const Project = () => {
                     display: 'flex',
                 }}
             >
-                <ProjectList profile={profile} onHandleUsage={handleUsageComplete} />
+                <ProjectList role={profile} onHandleUsage={handleUsageComplete} />
             </Space> </div>}
         </div>
     );

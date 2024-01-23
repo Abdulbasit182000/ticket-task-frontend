@@ -11,7 +11,7 @@ export const userSlice = createSlice({
         addAllUsers: (state,action) => {
             state.users = []
             const users = action.payload
-            users.map((user) => {
+            users.forEach((user) => {
                 const profile = {
                     "id": user.id,
                     "email": user.user.email

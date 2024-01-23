@@ -1,5 +1,5 @@
 import { Col, Flex, Row, Button, Form, Input, Space, Upload } from "antd";
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDocuments } from '../../api/main'
@@ -30,11 +30,6 @@ const CreateDocument = ({ id, onCreateComplete }) => {
 
     const HandleClick = async () => {
 
-        console.log('name is', name)
-        console.log('description is', description)
-        console.log('file is', file)
-        console.log('version is', version)
-
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
@@ -48,12 +43,10 @@ const CreateDocument = ({ id, onCreateComplete }) => {
     }
 
     const normFile = (e) => {
-        console.log('Upload event:', e);
         const fileList = Array.isArray(e) ? e : e?.fileList;
 
         if (fileList && fileList.length > 0) {
-            // Set the file state to the first uploaded file
-            setFile(fileList[0]?.originFileObj); // Use originFileObj to get the file object
+            setFile(fileList[0]?.originFileObj);
         }
 
         return fileList;

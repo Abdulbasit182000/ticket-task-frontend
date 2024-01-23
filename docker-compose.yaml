@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  reactapp:
+    build: ./ticketapp
+    container_name: ticketapp_c
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./ticketapp:/app
+      - ./app/node_modules
+    stdin_open: true
+    tty: true

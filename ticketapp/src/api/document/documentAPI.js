@@ -1,5 +1,5 @@
-import privateAxios from '../Private'
-import privateAxiosForm from '../FormData'
+import privateAxios from '../auth/Private'
+import privateAxiosForm from '../auth/FormData'
 
 // create document
 

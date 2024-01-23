@@ -1,4 +1,4 @@
-import privateAxios from '../Private'
+import privateAxios from '../auth/Private'
 
 
 export const getAllTasks = () => {
@@ -19,4 +19,8 @@ export const updateTask = (id,data) => {
 
 export const getCommentByTask = (id) => {
     return privateAxios.get(`tasks/${id}/comment/`)
+}
+
+export const getspecificTask = (id) => {
+    return privateAxios.get(`tasks/${id}/`)
 }

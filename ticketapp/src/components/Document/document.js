@@ -1,19 +1,19 @@
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { getDocuments,getprojects, getprofile, getAllUsers } from "../../api/main";
-import DoumentList from "../documentList/documentList";
+import DoumentList from "./documentList";
 import Navbar from "../Navbar/navbar";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Document = () => {
 
-    const [title, setTitle] = useState('')
     const dispatch = useDispatch();
     const [num, setNum] = useState(1)
     const { id } = useParams();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true)
+    const profile = useSelector(state => state.profile.profile.role)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,7 +34,7 @@ const Document = () => {
             }
         }
         fetchData();
-    }, [num, dispatch])
+    }, [num, dispatch, id, navigate])
 
     const handleUsageComplete = () => {
         setNum(num + 1);
@@ -46,7 +46,7 @@ const Document = () => {
             {!isLoading && <div>
                 <Navbar/>
                 <Divider/>
-                <DoumentList idp={id} onHandleUsage={handleUsageComplete}/>
+                <DoumentList role={profile} idp={id} onHandleUsage={handleUsageComplete}/>
             </div>}
         </div>
     );

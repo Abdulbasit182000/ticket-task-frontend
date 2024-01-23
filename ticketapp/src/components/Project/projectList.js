@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, message, Popconfirm, Col, Flex, Row, Card } from "antd";
 import { getprojects, deleteprojects } from '../../api/main'
-import CreateProject from "../createProject/createProject";
-import UpdateProject from "../updateProject/updatePoject";
+import CreateProject from "./createProject";
+import UpdateProject from "./updatePoject";
 import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
 
-const ProjectList = ({ profile, onHandleUsage }) => {
+const ProjectList = ({ role, onHandleUsage }) => {
 
     const projects = useSelector(state => state.project.projects)
     const dispatch = useDispatch();
@@ -47,7 +47,6 @@ const ProjectList = ({ profile, onHandleUsage }) => {
 
     };
     const cancel = (e) => {
-        console.log(e);
         message.error('Delete request withdrawn');
     };
 
@@ -65,7 +64,9 @@ const ProjectList = ({ profile, onHandleUsage }) => {
                                             width: 400,
                                         }}
                                         actions={[
-                                            <Button onClick={() => handleUpdate(project.id)} >Edit</Button>,
+                                            role === 'MA' ? (
+                                            <Button onClick={() => handleUpdate(project.id)} >Edit</Button> ): null,
+                                            role === 'MA' ? (
                                             <Popconfirm
                                                 key="delete"
                                                 title="Delete the Project"
@@ -75,7 +76,7 @@ const ProjectList = ({ profile, onHandleUsage }) => {
                                                 cancelText="No"
                                             >
                                                 <Button danger>Delete</Button>
-                                            </Popconfirm>,
+                                            </Popconfirm>) : null,
                                             <Link to={`/task/${project.id}`}>
                                                 <Button>Task Details</Button>
                                             </Link>,
@@ -94,14 +95,14 @@ const ProjectList = ({ profile, onHandleUsage }) => {
                             </div>
                         ))}
                     </Flex>
-                    <Flex
+                    {role === 'MA' && <Flex
                         vertical
                         gap="small"
                         style={{ width: '100%', }}>
                         <Button onClick={() => handleCreate()} type="primary" block>
                             Create Project
                         </Button>
-                    </Flex>
+                    </Flex>}
                 </Col>
             </Row>}
             {projects && usage === 'create' && <CreateProject onCreate={handleCreateComplete} />}

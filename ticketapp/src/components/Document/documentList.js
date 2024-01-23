@@ -1,29 +1,29 @@
-import { Col, Flex, Row } from "antd";
-import { Table, Popconfirm, Button, message} from 'antd';
+import { Flex } from "antd";
+import { Table, Popconfirm, Button, message } from 'antd';
 import { useState, useEffect } from "react";
 import { getDocuments, deleteDocuments } from "../../api/main";
 import { useDispatch, useSelector } from "react-redux";
-import CreateDocument from "../createDocument/createDocument";
-import UpdateDocument from "../updateDocument/updateDocument";
+import CreateDocument from "./createDocument";
+import UpdateDocument from "./updateDocument";
 
 const { Column } = Table;
 
 
-const DoumentList = ({ idp, onHandleUsage }) => {
+const DoumentList = ({ role, idp, onHandleUsage }) => {
 
     const documents = useSelector(state => state.document.documents);
     const [usage, setUsage] = useState('none');
     const [documentID, setDocumentID] = useState('');
     const [title, setTitle] = useState('')
     const dispatch = useDispatch();
-    const projects = useSelector(state => state.project.projects )
+    const projects = useSelector(state => state.project.projects)
 
     useEffect(() => {
         const selectedProject = projects.find(element => element.id === parseInt(idp))
         if (selectedProject) {
             setTitle(selectedProject.title)
         }
-    },[projects])
+    }, [idp, projects])
 
     const handleDelete = (id) => {
         dispatch(deleteDocuments(id)).then(
@@ -32,7 +32,6 @@ const DoumentList = ({ idp, onHandleUsage }) => {
     };
 
     const cancel = (e) => {
-        console.log(e);
         message.error('Delete request withdrawn');
     };
 
@@ -61,7 +60,7 @@ const DoumentList = ({ idp, onHandleUsage }) => {
 
     return (
         <div className="document-list">
-            {documents && title !== '' && <p><h1>{title}</h1></p> }
+            {documents && title !== '' && <p><h1>{title}</h1></p>}
             {documents && usage === 'none' && <div> <Table dataSource={documents}>
                 <Column title="Name" dataIndex="name" key="name"></Column>
                 <Column title="Description" dataIndex="description" key="description"></Column>
@@ -73,8 +72,8 @@ const DoumentList = ({ idp, onHandleUsage }) => {
                     key="actions"
                     render={(text, record) => (
                         <span>
-                            <Button onClick={() => handleUpdate(record.id)}>Edit</Button>
-                            <Popconfirm
+                            {role === 'MA' && <Button onClick={() => handleUpdate(record.id)}>Edit</Button>}
+                            {role === 'MA' && <Popconfirm
                                 key="delete"
                                 title="Delete the Document"
                                 onConfirm={() => handleDelete(record.id)}
@@ -83,22 +82,22 @@ const DoumentList = ({ idp, onHandleUsage }) => {
                                 cancelText="No"
                             >
                                 <Button danger>Delete</Button>
-                            </Popconfirm>
+                            </Popconfirm>}
                         </span>
                     )}
                 />
             </Table>
-                <Flex
+                {role === 'MA' && <Flex
                     vertical
                     gap="small"
                     style={{ width: '100%', }}>
                     <Button onClick={() => handleCreate()} type="primary" block>
                         Upload Document
                     </Button>
-                </Flex>
+                </Flex>}
             </div>}
-            {documents && usage === 'update' && <UpdateDocument id={documentID} onUpdateComplete={handleUpdateComplete}/>}
-            {documents && usage === 'create' && <CreateDocument id={idp} onCreateComplete={handleCreateComplete}/>}
+            {documents && usage === 'update' && <UpdateDocument id={documentID} onUpdateComplete={handleUpdateComplete} />}
+            {documents && usage === 'create' && <CreateDocument id={idp} onCreateComplete={handleCreateComplete} />}
         </div>
     );
 }

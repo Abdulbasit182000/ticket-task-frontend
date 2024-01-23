@@ -55,7 +55,3 @@ const CreateComment = ({ onComplete }) => {
 }
 
 export default CreateComment;
-
-// const HandleClick = () => {
-//     onComplete(comment);
-// }

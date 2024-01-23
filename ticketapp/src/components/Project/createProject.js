@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Input, Row, Col, Flex, Checkbox } from 'antd';
-import { updateProjects } from "../../api/main";
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createProjects } from '../../api/main';
 
-const UpdateProject = ({id, onUpdate}) => {
-    const projects = useSelector(state => state.project.projects)
-    const [project, setProject] = useState('')
-    const [team_members, setTeam_members] = useState([])
-    const all_users = useSelector(state => state.user.users)
+const CreateProject = ({onCreate}) => {
+
     const [title, setTitle] = useState('')
     const [description, setDecription] = useState('')
+    const [team_members, setTeam_members] = useState('')
+    const all_users = useSelector(state => state.user.users)
     const dispatch = useDispatch();
+
+    const onChange = (checkedValues) => {
+        setTeam_members(checkedValues)
+    }
 
     const HandleClick = async () => {
         const data = {
@@ -18,51 +22,15 @@ const UpdateProject = ({id, onUpdate}) => {
             "description": description,
             "team_members": team_members
         }
-        dispatch(updateProjects(id, data)).then(
-            () => onUpdate()
+        dispatch(createProjects(data)).then(
+            () => onCreate()
         )
     }
-
-    const onChange = (e) => {
-        let arr = team_members.slice()
-        const value = e.target.value
-        console.log('value is:', value)
-        if (team_members.includes(value)) {
-            arr = []
-            console.log('team includes value')
-            team_members.map((element) => {
-                if (element !== value) {
-                    console.log('true', element)
-                    arr.push(element)
-                }
-            })
-            console.log('arr is', arr)
-        }
-        else { arr.push(value) }
-        console.log('again', arr)
-        setTeam_members(arr)
-        console.log('new team list', team_members)
-    }
-    console.log('team-list', team_members)
-    useEffect(() => {
-        const selectedProject = projects.find(element => element.id === parseInt(id));
-        if (selectedProject) {
-            setProject(selectedProject);
-            setTeam_members(selectedProject.team_members);
-            setTitle(selectedProject.title);
-            setDecription(selectedProject.description);
-        }
-    }, [id, projects]);
-
-
-    const team = project.team_members
-
     return (
-        <div className="update-project">
-            {project?.title !== '' && team && <Row justify="center" align="middle" style={{ height: '100vh' }}>
+        <div className="create-project">
+            <Row justify="center" align="middle" style={{ height: '100vh' }}>
                 <Col>
-                    {console.log('title ype', typeof project.title)}
-                    <h1 style={{ textAlign: 'center' }}>Update Project</h1>
+                    <h1 style={{ textAlign: 'center' }}>Create Project</h1>
                     <Flex gap="large" wrap="wrap">
                         <Form
                             name="basic"
@@ -85,12 +53,12 @@ const UpdateProject = ({id, onUpdate}) => {
                                 name="title"
                                 rules={[
                                     {
-                                        required: false,
+                                        required: true,
                                         message: 'Please input title!',
                                     },
                                 ]}
                             >
-                                <Input defaultValue={project.title} onChange={(e) => setTitle(e.target.value)} />
+                                <Input value={title} onChange={(e) => setTitle(e.target.value)} />
                             </Form.Item>
 
                             <Form.Item
@@ -98,23 +66,32 @@ const UpdateProject = ({id, onUpdate}) => {
                                 name="description"
                                 rules={[
                                     {
-                                        required: false,
+                                        required: true,
                                         message: 'Please input the description!',
                                     },
                                 ]}
                             >
-                                <Input defaultValue={project.description} onChange={(e) => setDecription(e.target.value)} />
+                                <Input value={description} onChange={(e) => setDecription(e.target.value)} />
                             </Form.Item>
 
                             <Form.Item
                                 label="Members"
                                 name="Members"
                             >
-                                {all_users.map((user) => (
-                                    <Col span={8}>
-                                        <Checkbox onChange={onChange} defaultChecked={team.includes(user.id)} value={user.id}>{user.email}</Checkbox>
-                                    </Col>
-                                ))}
+                                <Checkbox.Group
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    onChange={onChange}
+                                >
+                                    <Row>
+                                        {all_users.map((user) => (
+                                            <Col span={8}>
+                                                <Checkbox value={user.id}>{user.email}</Checkbox>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </Checkbox.Group>
                             </Form.Item>
 
                             <Form.Item
@@ -130,9 +107,9 @@ const UpdateProject = ({id, onUpdate}) => {
                         </Form>
                     </Flex>
                 </Col>
-            </Row>}
+            </Row>
         </div>
     );
 }
 
-export default UpdateProject;
+export default CreateProject;

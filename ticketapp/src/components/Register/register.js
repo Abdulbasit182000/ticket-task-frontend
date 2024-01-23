@@ -40,7 +40,7 @@ const Register = () => {
             "role": role
         }
         try {
-            const response = await register(data).then(
+            await register(data).then(
                 () => navigate('/login', { replace: true })
             )
 

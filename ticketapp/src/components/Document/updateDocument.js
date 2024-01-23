@@ -1,8 +1,8 @@
 import { Col, Flex, Row, Button, Form, Input, Space, Upload } from "antd";
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateComments, updateDocuments } from "../../api/main";
+import { updateDocuments } from "../../api/main";
 
 const layout = {
     labelCol: {
@@ -40,7 +40,6 @@ const UpdateDocument = ({ id, onUpdateComplete }) => {
 
     const HandleClick = async () => {
 
-        console.log('did is', id)
 
         const formData = new FormData();
         formData.append('name', name);
@@ -54,12 +53,10 @@ const UpdateDocument = ({ id, onUpdateComplete }) => {
     }
 
     const normFile = (e) => {
-        console.log('Upload event:', e);
         const fileList = Array.isArray(e) ? e : e?.fileList;
 
         if (fileList && fileList.length > 0) {
-            // Set the file state to the first uploaded file
-            setFile(fileList[0]?.originFileObj); // Use originFileObj to get the file object
+            setFile(fileList[0]?.originFileObj);
         }
 
         return fileList;

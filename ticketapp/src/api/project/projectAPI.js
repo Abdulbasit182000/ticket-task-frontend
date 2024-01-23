@@ -1,4 +1,4 @@
-import privateAxios from '../Private'
+import privateAxios from '../auth/Private'
 
 
 // List all Projects

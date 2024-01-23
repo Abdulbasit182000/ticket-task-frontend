@@ -1,5 +1,5 @@
-import publicAxios from '../Public'
-import privateAxios from '../Private'
+import publicAxios from '../auth/Public'
+import privateAxios from '../auth/Private'
 
 // Register
 

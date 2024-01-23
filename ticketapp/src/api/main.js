@@ -1,5 +1,5 @@
 import { listprojects, deleteProject, createProject, updateProject, getTaskByProject, getDocumentByProject } from './project/projectAPI'
-import { getAllTasks, createTask, deleteTask, updateTask, getCommentByTask } from './Task/TaskAPI'
+import { getAllTasks, createTask, deleteTask, updateTask, getCommentByTask, getspecificTask } from './Task/TaskAPI'
 import { createComment, updateComment, deleteComment } from './comment/commentAPI'
 import { createDocument, updateDocument, deleteDocument } from './document/documentAPI'
 import { profile, allProfiles } from './accounts/accountAPI'
@@ -46,7 +46,7 @@ export const getprojects = () => async (dispatch) => {
 
 export const deleteprojects = (id) => async (dispatch) => {
     try {
-        const reponse = await deleteProject(id)
+        await deleteProject(id)
     }
     catch (error) {
         console.log(error)
@@ -55,7 +55,7 @@ export const deleteprojects = (id) => async (dispatch) => {
 
 export const createProjects = (data) => async (dispatch) => {
     try {
-        const response = await createProject(data)
+        await createProject(data)
     }
     catch (error) {
         console.log(error)
@@ -64,7 +64,7 @@ export const createProjects = (data) => async (dispatch) => {
 
 export const updateProjects = (id, data) => async (dispatch) => {
     try {
-        const response = await updateProject(id, data)
+        await updateProject(id, data)
     }
     catch (error) {
         console.log(error)
@@ -105,7 +105,7 @@ export const ListTasks = () => async (dispatch) => {
 
 export const createTasks = (data) => async (dispatch) => {
     try {
-        const response = await createTask(data)
+        await createTask(data)
     }
     catch (error) {
         console.log(error)
@@ -114,7 +114,7 @@ export const createTasks = (data) => async (dispatch) => {
 
 export const deleteTasks = (id) => async (dispatch) => {
     try {
-        const response = await deleteTask(id)
+        await deleteTask(id)
     }
     catch (error) {
         console.log(error)
@@ -123,7 +123,17 @@ export const deleteTasks = (id) => async (dispatch) => {
 
 export const updateTasks = (id, data) => async (dispatch) => {
     try {
-        const response = await updateTask(id, data)
+        await updateTask(id, data)
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+export const specificTask = (id) => async (dispatch) => {
+    try {
+        const response = await getspecificTask(id)
+        dispatch(addTasks(response.data))
     }
     catch (error) {
         console.log(error)
@@ -144,7 +154,7 @@ export const getcomments = (id) => async (dispatch) => {
 
 export const createComments = (data) => async (dispatch) => {
     try {
-        const response = await createComment(data)
+        await createComment(data)
     }
     catch (error) {
         console.log(error)
@@ -153,7 +163,7 @@ export const createComments = (data) => async (dispatch) => {
 
 export const updateComments = (id, data) => async (dispatch) => {
     try {
-        const response = await updateComment(id, data)
+        await updateComment(id, data)
     }
     catch (error) {
         console.log(error)
@@ -162,7 +172,7 @@ export const updateComments = (id, data) => async (dispatch) => {
 
 export const deleteComments = (id) => async (dispatch) => {
     try {
-        const response = await deleteComment(id)
+        await deleteComment(id)
     }
     catch (error) {
         console.log(error)
@@ -173,7 +183,7 @@ export const deleteComments = (id) => async (dispatch) => {
 
 export const createDocuments = (data) => async (dispatch) => {
     try {
-        const response = await createDocument(data)
+        await createDocument(data)
     }
     catch (error) {
         console.log(error)
@@ -182,7 +192,7 @@ export const createDocuments = (data) => async (dispatch) => {
 
 export const updateDocuments = (id, data) => async (dispatch) => {
     try {
-        const response = await updateDocument(id, data)
+        await updateDocument(id, data)
     }
     catch(error) {
         console.log(error)
@@ -191,7 +201,7 @@ export const updateDocuments = (id, data) => async (dispatch) => {
 
 export const deleteDocuments = (id) => async (dispatch) => {
     try {
-        const response = await deleteDocument(id)
+        await deleteDocument(id)
     }
     catch(error) {
         console.log(error)
